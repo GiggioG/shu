@@ -1,6 +1,8 @@
 # shu
 A chrome extention that introduces an API that enables developers to make utility plugins for [meet.jit.si](JitsiMeet) based systems like [shkolo.bg](Shkolo)'s virtual school. A chrome extention that allows you to use you microphone muting to send messages in shkolo.bg.
-The name comes from SHkoloUtilities.	
+The name comes from SHkoloUtilities.
+
+## Types of plugin
 There are three types of plugin:	
 * The built-in ones. These ones come with the extention when you install it.	
 * The verified ones. These are plugins made by other people, that I have verified that aren't a virus. They require installation.	
