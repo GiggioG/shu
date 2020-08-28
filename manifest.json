@@ -1,7 +1,8 @@
 {
   "manifest_version":2,
-  "name":"Mic4at",
+  "name":"Shu",
   "version":"1.0.0",
+  "description":"A chrome extention that enables developers to make utility plugins for jitsimeet based systems like shkolo.bg. The name comes from SHkolo Utilities.",
   "content_scripts":[
     {
       "matches":["https://meet.jit.si/*"],
@@ -12,10 +13,6 @@
       "matches":["https://*.shkolo.live/*"],
       "js":["content.js"],
       "all_frames": true
-    },
-    {
-      "matches":["https://meet.jit.si/*"],
-      "js":["content.js"]
     }
   ],
   "background":{
