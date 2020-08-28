@@ -1,3 +1,3 @@
 chrome.browserAction.onClicked.addListener(tab=>{
-  chrome.tabs.sendMessage(tab.id, "iconClicked");
+  chrome.tabs.sendMessage(tab.id, "send");
 });
