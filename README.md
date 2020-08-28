@@ -1,5 +1,5 @@
 # shu
-A chrome extention that introduces an API that enables developers to make utility plugins for [meet.jit.si](Jitsi Meet) based systems like [shkolo.bg](Shkolo)'s virtual school. A chrome extention that allows you to use you microphone muting to send messages in shkolo.bg.
+A chrome extention that introduces an API that enables developers to make utility plugins for [meet.jit.si](JitsiMeet) based systems like [shkolo.bg](Shkolo)'s virtual school. A chrome extention that allows you to use you microphone muting to send messages in shkolo.bg.
 The name comes from SHkoloUtilities.	
 There are three types of plugin:	
 * The built-in ones. These ones come with the extention when you install it.	
