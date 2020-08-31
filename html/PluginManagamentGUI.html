@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shu Plugin Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+    <script src="https://kit-free.fontawesome.com/releases/latest/js/free.min.js"></script>
+</head>
+
+<body>
+    <h1>Shu Plugin Management</h1>
+    <h2>BuiltIn Plugins</h2>
+    <div id="builtin" class="body-plugins">
+        <div class="plugin">
+            <div class="switch">
+                <div class="switch-dot switch-dot-on"></div>
+            </div>
+            <span class="plugin-title">KUPATA</span>
+            <div class="plugin-buttons">
+                <i class="fas fa-external-link-alt"></i>
+            </div>
+        </div>
+    </div>
+    <h2>Verified Plugins</h2>
+    <div id="verified" class="body-plugins">
+
+    </div>
+    <h2>Unverified</h2>
+    <div id="unverified" class="body-plugins">
+
+    </div>
+    <style>
+        :root {
+            --color-black: black;
+            --color-green: #2db526;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            place-items: center;
+            color: var(--color-black);
+            background-color: var(--color-green);
+        }
+        div.body-plugins {
+            border: 2px solid var(--color-black);
+        }
+        div.plugin {
+            display: flex;
+            flex-direction: none;
+        }
+        div.switch {
+            border-radius: 10%;
+            background-color: var(--color-green);
+            border: 1px solid var(--color-black);
+            width:50px;
+            height:22px;
+        }
+        div.switch-dot {
+            position: fixed;
+            border-radius: 50%;
+            width: 20px;
+            height:20px;
+        }
+        div.switch-dot-off {
+            left:10px;
+            background-color: var(--color-green);
+            border: 1px solid var(--color-black);
+        }
+        div.switch-dot-on {
+            left:40px;
+            background-color: var(--color-black);
+            border: 1px solid var(--color-green);
+        }
+        span.plugin-title {
+            margin-left: 5px;
+        }
+        div.plugin-buttons {
+            position: fixed;
+            right:15px;
+        }
+    </style>
+</body>
+
+</html>
