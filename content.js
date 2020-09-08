@@ -14,30 +14,84 @@ let SHU = {
         });
         return ret;
       },
-      setActive: async (id, active) => {
-        let old = await new Promise((resolve, reject)=>{
+      plugin: (title, code, pagehtml, pagejs) => {
+        let ret = {};
+        if (code.startsWith("http")) {
+          fetch(code)
+            .then(b => b.text)
+            .then(js => ret.code = js);
+        } else {
+          ret.code = code;
+        }
+        ret.title = title;
+        ret.id = title.replace(" ", "_");
+        ret.page = {
+          "html": pagehtml,
+          "js": pagejs
+        };
+        ret.active = true; //     .M.A.K.E. .I.T. .F.A.L.S.E.
+        ret.storage = {};
+        return ret;
+      },
+      loadVerifiedPluginsFromUrl: async url => {
+        let json = JSON.parse(await (await fetch(url)).text());
+        let plugins = [];
+        let currentPlugin;
+        json.forEach(pUrl => {
+          currentPlugin = await fetch(pUrl);
+          currentPlugin = await currentPlugin.text();
+          currentPlugin = JSON.parse(currentPlugin);
+          plugins.push(SHU.SYSTEM.PLUGINS.plugin(
+            currentPlugin.name,
+            currentPlugin.code,
+            currentPlugin.page.html,
+            currentPlugin.page.js
+          ));
+        });
+        let old = await new Promise((resolve, reject) => {
           chrome.storage.local.get(["plugins"], storageDOTlocal => {
             resolve(storageDOTlocal.plugins);
           });
         });
-        Object.keys(old).forEach(k=>{
-          old[k].forEach(p=>{
-            if(p.id == id){
+        let oldNames = [];
+        old.verified.forEach(p => {
+          oldNames.push(p.name);
+        });
+        plugin.forEach(p => {
+          if (!oldNames.includes(p.name)) {
+            old.verified.push(p);
+          }
+        });
+        await new Promise((resolve, reject) => {
+          chrome.storage.local.set({"plugins":old}, _ => {
+            resolve();
+          });
+        });
+      },
+      setActive: async (id, active) => {
+        let old = await new Promise((resolve, reject) => {
+          chrome.storage.local.get(["plugins"], storageDOTlocal => {
+            resolve(storageDOTlocal.plugins);
+          });
+        });
+        Object.keys(old).forEach(k => {
+          old[k].forEach(p => {
+            if (p.id == id) {
               p.active = active;
             }
           });
         });
-        await new Promise((resolve,reject)=>{
-          chrome.storage.local.set({"plugins":old}, _ => {
+        await new Promise((resolve, reject) => {
+          chrome.storage.local.set({ "plugins": old }, _ => {
             resolve();
           })
         });
       },
-      PluginGUI: class{
-        constructor(plugin){
+      PluginGUI: class {
+        constructor(plugin) {
           let html = plugin.page.html;
           let js = plugin.page.js;
-          this.window = open("","",".");
+          this.window = open("", "", ".");
           this.window.document.body.innerHTML = html;
           eval(js);
         }
@@ -63,7 +117,7 @@ let SHU = {
             this.window.document.querySelector(`#${plugin.id} div.switch`).addEventListener("click", async _ => {
               this.window.document.querySelector(`#${plugin.id} div.switch div.switch-dot`).classList.toggle("switch-dot-on");
               this.window.document.querySelector(`#${plugin.id} div.switch div.switch-dot`).classList.toggle("switch-dot-off");
-              await SHU.SYSTEM.PLUGINS.setActive(plugin.id,!plugin.active);
+              await SHU.SYSTEM.PLUGINS.setActive(plugin.id, !plugin.active);
             });
             this.window.document.querySelector(`#${plugin.title.replace(" ", "_")} div.plugin-openpage`).addEventListener("click", _ => {
               new SHU.SYSTEM.PLUGINS.PluginGUI(plugin);
@@ -94,8 +148,9 @@ chrome.runtime.onMessage.addListener((mesg, auth, resp) => {
   new SHU.SYSTEM.PluginManagementGUI();
 });
 (async _ => {//async
-  (await SHU.SYSTEM.PLUGINS.all()).forEach(plugin=>{
-    if(plugin.active){
+  await SHU.SYSTEM.PLUGINS.loadVerifiedPluginsFromUrl("https://giggiog.github.io/misc/shu-verified-list.json");
+  (await SHU.SYSTEM.PLUGINS.all()).forEach(plugin => {
+    if (plugin.active) {
       eval(plugin.code);
     }
   });
