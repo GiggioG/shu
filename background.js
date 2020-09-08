@@ -1,4 +1,4 @@
-function plugin(title, code, html) {
+function plugin(title, code, pagehtml, pagejs) {
   let ret = {};
   if (code.startsWith("http")) {
     fetch(code)
@@ -8,8 +8,12 @@ function plugin(title, code, html) {
     ret.code = code;
   }
   ret.title = title;
-  ret.html = html;
-  ret.active = false;
+  ret.id = title.replace(" ","_");
+  ret.page = {
+    "html": pagehtml,
+    "js": pagejs
+  };
+  ret.active = true; //     .M.A.K.E. .I.T. .F.A.L.S.E.
   ret.storage = {};
   return ret;
 }
@@ -17,20 +21,12 @@ chrome.runtime.onInstalled.addListener(_ => {
   chrome.storage.local.set({
     plugins: {
       builtin: [
-        plugin("test", "alert(\"test plugin\")", "<h1>0123456789</h1>")
+        plugin("bi test", "console.error(\"bi test\")", "<h1>bi test</h1>", `console.log("bi test")`),
       ],
       verified: /*loadPluginsFromUrl("")*/[],
-      unverified: [],
-      all: _=>{
-        chrome.storage.local.get(["plugins"],storageDOTlocal=>{
-          const {plugins} = storageDOTlocal;
-        })
-        let ret = [];
-        plugins.builtin.forEach(plugin=>{plugin.type = "builtin"; ret.push(plugin);});
-        plugins.verified.forEach(plugin=>{plugin.type = "verified"; ret.push(plugin);});
-        plugins.unverified.forEach(plugin=>{plugin.type = "unverified"; ret.push(plugin);});
-        return ret;
-      }
+      unverified: [
+        plugin("uv test", "console.error(\"uv test\")", "<h1>uv test</h1>", `console.log("uv test")`)
+      ],
     }
   });
 });
