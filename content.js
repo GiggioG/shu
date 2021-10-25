@@ -14,7 +14,7 @@ let SHU = {
         });
         return ret;
       },
-      plugin: (title, code, pagehtml, pagejs) => {
+      plugin: (name, code, pagehtml, pagejs) => {
         let ret = {};
         if (code.startsWith("http")) {
           fetch(code)
@@ -23,8 +23,8 @@ let SHU = {
         } else {
           ret.code = code;
         }
-        ret.title = title;
-        ret.id = title.replace(" ", "_");
+        ret.name = name;
+        ret.id = name.replace(" ", "_");
         ret.page = {
           "html": pagehtml,
           "js": pagejs
@@ -37,7 +37,7 @@ let SHU = {
         let json = JSON.parse(await (await fetch(url)).text());
         let plugins = [];
         let currentPlugin;
-        json.forEach(pUrl => {
+        json.forEach(async pUrl => {
           currentPlugin = await fetch(pUrl);
           currentPlugin = await currentPlugin.text();
           currentPlugin = JSON.parse(currentPlugin);
@@ -57,9 +57,10 @@ let SHU = {
         old.verified.forEach(p => {
           oldNames.push(p.name);
         });
-        plugin.forEach(p => {
+        plugins.forEach(p => {
           if (!oldNames.includes(p.name)) {
             old.verified.push(p);
+            console.error(`pushed ${p.name}`);
           }
         });
         await new Promise((resolve, reject) => {
@@ -113,13 +114,13 @@ let SHU = {
             let pluginDiv = this.window.document.createElement("div");
             this.window.document.querySelector(`#${plugin.type}`).appendChild(pluginDiv);
             //FROM ./html/PluginManagementGUI.html lines 16-26
-            pluginDiv.outerHTML = `<div class=\"plugin\" id=\"${plugin.id}\"> <div class=\"switch\"> <div class=\"switch-dot switch-dot-${plugin.active ? "on" : "off"}\"></div> </div> <span class=\"plugin-title\">${plugin.title}</span> <div class=\"plugin-openpage\"> <img src=\"https://i.imgur.com/Ary7PUA.png\" alt=\"Link icon\"> </div> </div>`;
+            pluginDiv.outerHTML = `<div class=\"plugin\" id=\"${plugin.id}\"> <div class=\"switch\"> <div class=\"switch-dot switch-dot-${plugin.active ? "on" : "off"}\"></div> </div> <span class=\"plugin-title\">${plugin.name}</span> <div class=\"plugin-openpage\"> <img src=\"https://i.imgur.com/Ary7PUA.png\" alt=\"Link icon\"> </div> </div>`;
             this.window.document.querySelector(`#${plugin.id} div.switch`).addEventListener("click", async _ => {
               this.window.document.querySelector(`#${plugin.id} div.switch div.switch-dot`).classList.toggle("switch-dot-on");
               this.window.document.querySelector(`#${plugin.id} div.switch div.switch-dot`).classList.toggle("switch-dot-off");
               await SHU.SYSTEM.PLUGINS.setActive(plugin.id, !plugin.active);
             });
-            this.window.document.querySelector(`#${plugin.title.replace(" ", "_")} div.plugin-openpage`).addEventListener("click", _ => {
+            this.window.document.querySelector(`#${plugin.id} div.plugin-openpage`).addEventListener("click", _ => {
               new SHU.SYSTEM.PLUGINS.PluginGUI(plugin);
             });
           });

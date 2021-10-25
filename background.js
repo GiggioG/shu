@@ -1,4 +1,4 @@
-function plugin(title, code, pagehtml, pagejs) {
+function plugin(name, code, pagehtml, pagejs) {
   let ret = {};
   if (code.startsWith("http")) {
     fetch(code)
@@ -7,8 +7,8 @@ function plugin(title, code, pagehtml, pagejs) {
   } else {
     ret.code = code;
   }
-  ret.title = title;
-  ret.id = title.replace(" ","_");
+  ret.name = name;
+  ret.id = name.replace(" ","_");
   ret.page = {
     "html": pagehtml,
     "js": pagejs
@@ -23,7 +23,9 @@ chrome.runtime.onInstalled.addListener(_ => {
       builtin: [
         plugin("bi test", "console.error(\"bi test\")", "<h1>bi test</h1>", `console.log("bi test")`),
       ],
-      verified: /*loadPluginsFromUrl("")*/[],
+      verified: /*loadPluginsFromUrl("")*/[
+        plugin("v test", "console.error(\"v test\")", "<h1>v test</h1>", "console.log(v test)")
+      ],
       unverified: [
         plugin("uv test", "console.error(\"uv test\")", "<h1>uv test</h1>", `console.log("uv test")`)
       ],
