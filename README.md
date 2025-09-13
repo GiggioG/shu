@@ -1,3 +1,5 @@
+# THIS IS JUST NEVER GOING TO HAPPEN ATP, I GIVE UP.
+
 # shu
 A chrome extention that introduces an API that enables developers to make utility plugins for [JitsiMeet](https://meet.jit.si) based systems like [Shkolo](https://shkolo.bg)'s virtual school.
 
