@@ -1,4 +1,4 @@
-# THIS IS JUST NEVER GOING TO HAPPEN ATP, I GIVE UP.
+# I started this project a long time ago, but then I didn't know about userscripts. Use those instead. I give up on this project.
 
 # shu
 A chrome extention that introduces an API that enables developers to make utility plugins for [JitsiMeet](https://meet.jit.si) based systems like [Shkolo](https://shkolo.bg)'s virtual school.
